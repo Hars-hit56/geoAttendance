@@ -7,40 +7,58 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
+import { APP_PADDING_HORIZONTAL } from '../../styles/globalStyles';
+import { spacing } from '../../styles/spacing';
+import { FONT_FAMILY, FONT_SIZE } from '../../styles/typography';
 import colors from '../../utility/colors';
 import Image from '../common/Image';
 import RegularText from '../common/RegularText';
-import { APP_PADDING_HORIZONTAL } from '../../styles/globalStyles';
-import { FONT_FAMILY, FONT_SIZE } from '../../styles/typography';
-import { spacing } from '../../styles/spacing';
-interface EmptyListProps {
+
+type EmptyListProps = {
   msg?: string;
-  img?: string;
+  subMsg?: string; // Added for the secondary description
+  img?: any;
   contentStyle?: StyleProp<TextStyle>;
+  subContentStyle?: StyleProp<TextStyle>;
   textComponent?: React.ReactNode;
   mainContaierStyle?: StyleProp<ViewStyle>;
   imageStyle?: StyleProp<ImageStyle>;
   imageViewStyle?: StyleProp<ViewStyle>;
-}
+};
 
-const EmptyList = ({
+const EmptyList: React.FC<EmptyListProps> = ({
   msg,
+  subMsg,
   img,
   contentStyle,
+  subContentStyle,
   textComponent,
   mainContaierStyle,
   imageStyle,
   imageViewStyle,
-}: EmptyListProps) => {
+}) => {
   return (
     <View style={[styles.mainContainer, mainContaierStyle]}>
       {img && (
-        <Image source={img} style={[imageStyle]} viewStyle={[imageViewStyle]} />
+        <Image
+          source={img}
+          style={[styles.defaultImage, imageStyle]}
+          resizeMode="contain"
+          viewStyle={[styles.imageCircle, imageViewStyle]}
+        />
       )}
+
       {!textComponent ? (
-        <RegularText style={[styles.content, contentStyle]}>
-          {msg || 'No data'}
-        </RegularText>
+        <View style={styles.textContainer}>
+          <RegularText style={[styles.content, contentStyle]}>
+            {msg || 'No data'}
+          </RegularText>
+          {subMsg && (
+            <RegularText style={[styles.subContent, subContentStyle]}>
+              {subMsg}
+            </RegularText>
+          )}
+        </View>
       ) : (
         textComponent
       )}
@@ -51,14 +69,36 @@ const EmptyList = ({
 const styles = StyleSheet.create({
   mainContainer: {
     alignItems: 'center',
-    paddingVertical: APP_PADDING_HORIZONTAL * 2,
-    paddingHorizontal: APP_PADDING_HORIZONTAL * 2,
-    gap: spacing.MARGIN_20,
+    justifyContent: 'center',
+    paddingVertical: spacing.MARGIN_60,
+    paddingHorizontal: APP_PADDING_HORIZONTAL * 3.1,
+  },
+  imageCircle: {
+    width: spacing.WIDTH_90,
+    height: spacing.WIDTH_90,
+    borderRadius: spacing.RADIUS_100,
+    backgroundColor: colors.GREEN_300, // Light tinted background from screenshot
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: spacing.MARGIN_24,
+  },
+  defaultImage: {},
+  textContainer: {
+    alignItems: 'center',
   },
   content: {
-    fontSize: FONT_SIZE.SEMI_MEDIUM,
-    fontFamily: FONT_FAMILY.PRIMARY_MEDIUM,
-    color: colors.GREY_600,
+    fontSize: FONT_SIZE.SEMI_MEDIUM, // "No customers added yet" is prominent
+    fontFamily: FONT_FAMILY.PRIMARY_SEMI_BOLD,
+    color: colors.BLACK,
+    textAlign: 'center',
+  },
+  subContent: {
+    fontSize: FONT_SIZE.NORMAL,
+    fontFamily: FONT_FAMILY.PRIMARY_REGULAR,
+    color: colors.GREY_500,
+    textAlign: 'center',
+    marginTop: spacing.MARGIN_10,
+    lineHeight: spacing.MARGIN_22,
   },
 });
 

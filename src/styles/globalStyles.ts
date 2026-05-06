@@ -46,7 +46,7 @@ const commonStyle = StyleSheet.create({
   iconCover: {
     width: spacing.WIDTH_38,
     height: spacing.WIDTH_38,
-    borderRadius: spacing.RADIUS_12,
+    borderRadius: spacing.RADIUS_30,
     justifyContent: 'center',
     alignItems: 'center',
   },

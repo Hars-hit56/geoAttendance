@@ -47,7 +47,7 @@ const BackButton = ({
       onPress={() => onPressBack()}
     >
       <Image
-        source={Images.IMG_ARROW}
+        source={Images.IMG_ARROW_FORWARD}
         style={[
           styles.iconStyle,
           arrowStyle as any,
@@ -72,7 +72,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  iconStyle: {},
+  iconStyle: {
+    transform: [{ rotate: '180deg' }],
+  },
   text: {
     fontSize: FONT_SIZE.SEMI_MEDIUM,
     marginLeft: spacing.MARGIN_6,
