@@ -24,9 +24,8 @@ const Home = () => {
       />
       <View style={styles.map} />
       <View style={styles.bottomContainer}>
-        {/* 1. Status Banner */}
         <View style={styles.statusBanner}>
-          <Image source={Images.IMG_CHECK} style={styles.checkIcon} />
+          <Image source={Images.IMG_CHECK} />
           <View style={styles.statusTextContainer}>
             <RegularText style={styles.statusTitle}>
               Inside Office Area
@@ -37,7 +36,6 @@ const Home = () => {
           </View>
         </View>
 
-        {/* 2. Metrics Grid */}
         <View style={styles.metricsRow}>
           <View style={styles.metricCard}>
             <View style={styles.iconPlaceholder} />
@@ -56,10 +54,8 @@ const Home = () => {
           </View>
         </View>
 
-        {/* 3. Button */}
         <Button title="Check In" onPressButton={onPressCheckIn} />
 
-        {/* 4. Footer Info */}
         <View style={styles.footerInfo}>
           <RegularText style={styles.footerText}>
             📍 Office radius: 100 meters
@@ -97,10 +93,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.MARGIN_16,
     gap: spacing.MARGIN_12,
   },
-  checkIcon: {
-    width: spacing.WIDTH_40,
-    height: spacing.WIDTH_40,
-  },
+
   statusTextContainer: {
     flex: 1,
   },

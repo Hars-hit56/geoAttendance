@@ -38,7 +38,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ history, index }) => {
             <RegularText
               style={[
                 styles.statusText,
-                { color: isSuccess ? '#4CAF50' : '#D32F2F' },
+                { color: isSuccess ? colors.GREEN_600 : colors.RED_600 },
               ]}
             >
               {history.status}
