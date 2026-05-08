@@ -1,10 +1,9 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import attendanceReducer from './attendanceSlice';
 
-const rootReducer = (state: any, action: any) => {
-  return combinedReducer(state, action);
-};
-
-const combinedReducer = combineReducers({});
+const rootReducer = combineReducers({
+  attendance: attendanceReducer,
+});
 
 const store = configureStore({
   reducer: rootReducer,
@@ -13,5 +12,6 @@ const store = configureStore({
 });
 
 export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
 export default store;

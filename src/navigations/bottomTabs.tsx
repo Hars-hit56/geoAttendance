@@ -9,8 +9,13 @@ import Home from '../component/screen/appScreen/home';
 import { spacing } from '../styles/spacing';
 import { FONT_FAMILY, FONT_SIZE } from '../styles/typography';
 import colors from '../utility/colors';
-import { SCREEN_HISTORY, SCREEN_HOME } from '../utility/constants';
+import {
+  SCREEN_HISTORY,
+  SCREEN_HOME,
+  SCREEN_SETTINGS,
+} from '../utility/constants';
 import { Images } from '../utility/imagePaths';
+import Settings from '../component/screen/appScreen/settings';
 
 const Tab = createBottomTabNavigator();
 
@@ -30,6 +35,13 @@ const BottomTabs = () => {
       icon_active: Images.IMG_HISTORY_ACTIVE,
       icon_inactive: Images.IMG_HISTORY_INACTIVE,
       component: History,
+    },
+    {
+      label: 'Settings',
+      name: SCREEN_SETTINGS,
+      icon_active: Images.IMG_SETTINGS_ACTIVE,
+      icon_inactive: Images.IMG_SETTINGS_INACTIVE,
+      component: Settings,
     },
   ];
 

@@ -83,8 +83,6 @@ const TextInput = ({
   isErrorPossible,
 }: TextInputProps) => {
   const [isFieldActive, setIsFieldActive] = useState(false);
-  const [isUserOnInput, setIsUserOnInput] = useState(false);
-
   function _handleFocus() {
     if (!isFieldActive) {
       setIsFieldActive(true);

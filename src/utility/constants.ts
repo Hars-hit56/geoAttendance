@@ -5,6 +5,7 @@ export const KEY_BOTTOM_TAB_NAVIGATOR = 'bottomTabNavigator';
 //App Screen
 export const SCREEN_HOME = 'home_screen';
 export const SCREEN_HISTORY = 'history_screen';
+export const SCREEN_SETTINGS = 'settings_screen';
 
 // CURRENCY
 export const CURRENCY = '₹';

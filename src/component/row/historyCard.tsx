@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import colors from '../../utility/colors';
 import RegularText from '../common/RegularText';
-import { boxShadowLess, boxShadowTwo } from '../../styles/Mixins';
+import { boxShadowLess } from '../../styles/Mixins';
 import { spacing } from '../../styles/spacing';
 import commonStyle, { APP_PADDING_HORIZONTAL } from '../../styles/globalStyles';
 import Image from '../common/Image';
@@ -22,11 +22,8 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ history, index }) => {
         index === 0 && { marginTop: spacing.MARGIN_10 },
       ]}
     >
-      {/* Status Icon Circle */}
-
       <Image source={isSuccess ? Images.IMG_CHECK : Images.IMG_FAILED} />
       <View style={styles.rightSection}>
-        {/* Content Section */}
         <View style={styles.contentContainer}>
           <RegularText style={styles.dateText}>{history.date}</RegularText>
           <RegularText style={styles.timeText}>{history.time}</RegularText>

@@ -18,8 +18,6 @@ interface ImageProps {
 }
 
 const Image = ({ source, style, resizeMode, viewStyle }: ImageProps) => {
-  function onPressImage(link: string) {}
-
   return (
     <View style={viewStyle}>
       <RNImage

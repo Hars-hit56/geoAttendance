@@ -1,77 +1,46 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadAttendanceHistory } from '../../../../redux/attendanceSlice';
+import { AppDispatch, RootState } from '../../../../redux/store';
 import colors from '../../../../utility/colors';
 import AppContainer from '../../../common/container/AppContainer';
+import flashMessage from '../../../common/FlashAlert';
 import Header from '../../../common/header/Header';
 import HistoryList from '../../../modules/HistoryList';
 
 const History = () => {
-  const HISTORY_DATA = [
-    {
-      id: '1',
-      date: '20 May 2025',
-      time: '09:41 AM',
-      status: 'Checked In',
-      location: 'Inside Office Area',
-    },
-    {
-      id: '2',
-      date: '19 May 2025',
-      time: '09:15 AM',
-      status: 'Checked In',
-      location: 'Inside Office Area',
-    },
-    {
-      id: '3',
-      date: '18 May 2025',
-      time: '10:05 AM',
-      status: 'Failed',
-      location: 'Outside Office Area',
-    },
-    {
-      id: '4',
-      date: '18 May 2025',
-      time: '10:05 AM',
-      status: 'Failed',
-      location: 'Outside Office Area',
-    },
-    {
-      id: '5',
-      date: '18 May 2025',
-      time: '10:05 AM',
-      status: 'Failed',
-      location: 'Outside Office Area',
-    },
-    {
-      id: '6',
-      date: '18 May 2025',
-      time: '10:05 AM',
-      status: 'Failed',
-      location: 'Outside Office Area',
-    },
-    {
-      id: '7',
-      date: '18 May 2025',
-      time: '10:05 AM',
-      status: 'Failed',
-      location: 'Outside Office Area',
-    },
-    {
-      id: '8',
-      date: '18 May 2025',
-      time: '10:05 AM',
-      status: 'Failed',
-      location: 'Outside Office Area',
-    },
-  ];
+  const dispatch = useDispatch<AppDispatch>();
+  const history = useSelector((state: RootState) => state.attendance.records);
+
+  useFocusEffect(
+    useCallback(() => {
+      let isActive = true;
+
+      const loadHistory = async () => {
+        try {
+          await dispatch(loadAttendanceHistory()).unwrap();
+        } catch {
+          if (isActive) {
+            flashMessage('Unable to load attendance history', 'danger');
+          }
+        }
+      };
+
+      loadHistory();
+
+      return () => {
+        isActive = false;
+      };
+    }, [dispatch]),
+  );
+
   return (
     <AppContainer statusBarColor={colors.APP_BACKGROUND_WHITE}>
-      <Header title="Attandance History" hideBack />
-      <HistoryList history={HISTORY_DATA} />
+      <Header title="Attendance History" hideBack />
+      <HistoryList history={history} />
     </AppContainer>
   );
 };
-
-const styles = StyleSheet.create({});
 
 export default History;
