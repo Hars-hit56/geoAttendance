@@ -1,97 +1,111 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Geo Attendance App
 
-# Getting Started
+Geo Attendance is a React Native attendance app that validates employee check-ins using live GPS location and an office geofence. Users can save the office coordinates, configure a geofence radius, check in only when inside the allowed area, and view locally saved attendance history.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## Features
 
-## Step 1: Start Metro
+- Live location tracking on the Home screen
+- Google Maps view with office marker, current location, and geofence circle
+- Office geofence setup from manual coordinates or current GPS
+- Distance and GPS accuracy display
+- Attendance check-in blocked outside the configured office radius
+- Local offline storage for attendance records and geofence settings
+- Attendance history screen
+- Redux Toolkit state management
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## Tech Stack
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+- React Native 0.85
+- React 19
+- TypeScript
+- Redux Toolkit and React Redux
+- React Navigation
+- React Native Maps
+- React Native Geolocation
+- AsyncStorage
+- NetInfo
+
+## Environment Setup
+
+Create a `.env` file in the project root:
+
+```env
+GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here
+```
+
+The Android manifest reads this value through Gradle:
+
+```xml
+android:value="${googleMapsApiKey}"
+```
+
+Do not commit `.env`. Use `.env.example` as the template for required environment values.
+
+## Installation
+
+Install dependencies:
 
 ```sh
-# Using npm
+npm install
+```
+
+Start Metro:
+
+```sh
 npm start
-
-# OR using Yarn
-yarn start
 ```
 
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
+Run Android:
 
 ```sh
-# Using npm
 npm run android
-
-# OR using Yarn
-yarn android
 ```
 
-### iOS
+Run iOS:
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+```sh
+npm run ios
+```
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+For iOS, install pods after native dependency changes:
 
 ```sh
 bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
 bundle exec pod install
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+## Main Screens
+
+### Home
+
+Shows the map, tracks current location, calculates distance from the saved office location, and allows attendance check-in only inside the geofence.
+
+### Settings
+
+Lets the user set office latitude, longitude, and geofence radius. The user can also fill coordinates from current GPS.
+
+### Attendance History
+
+Displays saved attendance check-in records from local storage.
+
+## Data Storage
+
+The app stores data locally with AsyncStorage:
+
+- `attendance_records`: saved attendance history
+- `office_location`: saved office coordinates
+- `geofence_radius`: saved radius in meters
+
+## Useful Commands
 
 ```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
+npm run lint
+npm test
+npx tsc --noEmit
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+## Notes
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
-
-## Step 3: Modify your app
-
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+- Location permission is required for check-in and for using current GPS in Settings.
+- Google Maps requires a valid Android API key.
+- Restrict the Google Maps API key in Google Cloud Console by package name and SHA certificate.
