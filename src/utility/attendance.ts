@@ -1,9 +1,11 @@
+import {
+  ATTENDANCE_STORAGE_KEY,
+  GEOFENCE_RADIUS_STORAGE_KEY,
+  OFFICE_LOCATION_STORAGE_KEY,
+} from './constants';
 import { retrieveItem, storeItem } from './customAsyncStorage';
 
 export const DEFAULT_GEOFENCE_RADIUS_METERS = 100;
-export const ATTENDANCE_STORAGE_KEY = 'attendance_records';
-export const OFFICE_LOCATION_STORAGE_KEY = 'office_location';
-export const GEOFENCE_RADIUS_STORAGE_KEY = 'geofence_radius';
 
 export type Coordinate = {
   latitude: number;
@@ -20,51 +22,6 @@ export type AttendanceRecord = {
   latitude: number | null;
   longitude: number | null;
 };
-
-const toRadians = (value: number) => (value * Math.PI) / 180;
-
-export const getDistanceInMeters = (
-  currentLocation: Coordinate,
-  officeLocation: Coordinate,
-) => {
-  const earthRadiusMeters = 6371000;
-  const latitudeDelta = toRadians(
-    officeLocation.latitude - currentLocation.latitude,
-  );
-  const longitudeDelta = toRadians(
-    officeLocation.longitude - currentLocation.longitude,
-  );
-
-  const startLatitude = toRadians(currentLocation.latitude);
-  const endLatitude = toRadians(officeLocation.latitude);
-
-  const a =
-    Math.sin(latitudeDelta / 2) * Math.sin(latitudeDelta / 2) +
-    Math.cos(startLatitude) *
-      Math.cos(endLatitude) *
-      Math.sin(longitudeDelta / 2) *
-      Math.sin(longitudeDelta / 2);
-
-  return earthRadiusMeters * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-};
-
-export const isInsideOfficeGeofence = (
-  distance: number | null,
-  radius: number,
-) => distance !== null && distance <= radius;
-
-export const formatAttendanceDateTime = (date: Date) => ({
-  date: date.toLocaleDateString('en-IN', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-  }),
-  time: date.toLocaleTimeString('en-IN', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true,
-  }),
-});
 
 export const getAttendanceRecords = async (): Promise<AttendanceRecord[]> => {
   const records = await retrieveItem<AttendanceRecord[]>(

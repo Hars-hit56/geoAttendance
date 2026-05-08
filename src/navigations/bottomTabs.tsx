@@ -64,10 +64,7 @@ const BottomTabs = () => {
           tabBarHideOnKeyboard: true,
 
           tabBarButton: props => (
-            <TouchableOpacity
-              {...(props as any)}
-              activeOpacity={1} // 👈 disables fade effect
-            />
+            <TouchableOpacity {...(props as any)} activeOpacity={1} />
           ),
         }}
       >

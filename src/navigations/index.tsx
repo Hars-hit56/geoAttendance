@@ -16,7 +16,6 @@ const AppStack = () => {
     <View style={{ flex: 1 }}>
       <NavigationContainer ref={navigationRef}>
         <Stack.Navigator
-          // initialRouteName={Utils.Constants.KEY_APP_NAVIGATOR}
           screenOptions={{
             headerShown: false,
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,

@@ -1,10 +1,10 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
   AttendanceRecord,
   Coordinate,
   DEFAULT_GEOFENCE_RADIUS_METERS,
-  getGeofenceSettings,
   getAttendanceRecords,
+  getGeofenceSettings,
   saveAttendanceRecord,
   saveGeofenceSettings,
 } from '../utility/attendance';
@@ -58,20 +58,7 @@ export const saveOfficeGeofenceSettings = createAsyncThunk(
 const attendanceSlice = createSlice({
   name: 'attendance',
   initialState,
-  reducers: {
-    setAttendanceRecords: (
-      state,
-      action: PayloadAction<AttendanceRecord[]>,
-    ) => {
-      state.records = action.payload;
-    },
-    setOfficeLocation: (state, action: PayloadAction<Coordinate | null>) => {
-      state.officeLocation = action.payload;
-    },
-    setGeofenceRadius: (state, action: PayloadAction<number>) => {
-      state.geofenceRadius = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: builder => {
     builder
       .addCase(loadAttendanceHistory.pending, state => {
@@ -118,6 +105,4 @@ const attendanceSlice = createSlice({
   },
 });
 
-export const { setAttendanceRecords, setGeofenceRadius, setOfficeLocation } =
-  attendanceSlice.actions;
 export default attendanceSlice.reducer;

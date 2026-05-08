@@ -1,16 +1,17 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import colors from '../../utility/colors';
-import RegularText from '../common/RegularText';
+import commonStyle, { APP_PADDING_HORIZONTAL } from '../../styles/globalStyles';
 import { boxShadowLess } from '../../styles/Mixins';
 import { spacing } from '../../styles/spacing';
-import commonStyle, { APP_PADDING_HORIZONTAL } from '../../styles/globalStyles';
-import Image from '../common/Image';
-import { Images } from '../../utility/imagePaths';
 import { FONT_FAMILY, FONT_SIZE } from '../../styles/typography';
+import { AttendanceRecord } from '../../utility/attendance';
+import colors from '../../utility/colors';
+import { Images } from '../../utility/imagePaths';
+import Image from '../common/Image';
+import RegularText from '../common/RegularText';
 
 type HistoryCardProps = {
-  history: any;
+  history: AttendanceRecord;
   index: number;
 };
 const HistoryCard: React.FC<HistoryCardProps> = ({ history, index }) => {

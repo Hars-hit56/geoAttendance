@@ -11,13 +11,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {
-  Linking,
-  PermissionsAndroid,
-  Platform,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { Linking, StyleSheet, View } from 'react-native';
 import MapView, { Circle, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -30,31 +24,28 @@ import commonStyle, {
 } from '../../../../styles/globalStyles';
 import { spacing } from '../../../../styles/spacing';
 import { FONT_FAMILY, FONT_SIZE } from '../../../../styles/typography';
+import { Coordinate } from '../../../../utility/attendance';
+import colors from '../../../../utility/colors';
 import {
-  Coordinate,
   formatAttendanceDateTime,
   getDistanceInMeters,
+  getOfficeRegionDelta,
   isInsideOfficeGeofence,
-} from '../../../../utility/attendance';
-import colors from '../../../../utility/colors';
+  requestLocationPermission,
+} from '../../../../utility/commonFunction';
+import { Images } from '../../../../utility/imagePaths';
 import Button from '../../../common/buttons/Button';
 import AppContainer from '../../../common/container/AppContainer';
 import flashMessage from '../../../common/FlashAlert';
 import Header from '../../../common/header/Header';
 import Image from '../../../common/Image';
 import RegularText from '../../../common/RegularText';
-import { Images } from '../../../../utility/imagePaths';
 
 const INITIAL_REGION = {
   latitude: 20.5937,
   longitude: 78.9629,
   latitudeDelta: 0.01,
   longitudeDelta: 0.01,
-};
-
-const getOfficeRegionDelta = (radius: number) => {
-  const radiusWithPadding = Math.max(radius * 4, 500);
-  return radiusWithPadding / 111000;
 };
 
 const Home = () => {
@@ -168,30 +159,11 @@ const Home = () => {
     }, 5000);
   }, [handleLocationError, handleLocationUpdate]);
 
-  const requestLocationPermission = useCallback(async () => {
+  const requestLocationAccess = useCallback(async () => {
     try {
-      let granted = true;
-
-      if (Platform.OS === 'android') {
-        const response = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-          {
-            title: 'Location permission',
-            message:
-              'Geo Attendance needs your current location to validate office check-ins.',
-            buttonPositive: 'Allow',
-            buttonNegative: 'Deny',
-          },
-        );
-        granted = response === PermissionsAndroid.RESULTS.GRANTED;
-      } else {
-        granted = await new Promise(resolve => {
-          Geolocation.requestAuthorization(
-            () => resolve(true),
-            () => resolve(false),
-          );
-        });
-      }
+      const granted = await requestLocationPermission(
+        'Geo Attendance needs your current location to validate office check-ins.',
+      );
 
       setIsPermissionGranted(granted);
 
@@ -211,7 +183,7 @@ const Home = () => {
     });
 
     dispatch(loadOfficeLocation());
-    requestLocationPermission();
+    requestLocationAccess();
 
     return () => {
       unsubscribe();
@@ -222,7 +194,7 @@ const Home = () => {
         clearInterval(locationRefreshTimer.current);
       }
     };
-  }, [dispatch, requestLocationPermission]);
+  }, [dispatch, requestLocationAccess]);
 
   useFocusEffect(
     useCallback(() => {

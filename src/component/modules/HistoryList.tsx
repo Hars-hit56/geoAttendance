@@ -1,13 +1,14 @@
 import React from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { spacing } from '../../styles/spacing';
+import { AttendanceRecord } from '../../utility/attendance';
 import colors from '../../utility/colors';
 import { Images } from '../../utility/imagePaths';
 import HistoryCard from '../row/historyCard';
 import EmptyList from './EmptyList';
 
 type HistoryListProps = {
-  history: any[];
+  history: AttendanceRecord[];
 };
 
 const HistoryList: React.FC<HistoryListProps> = ({ history }) => {

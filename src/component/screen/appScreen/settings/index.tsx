@@ -4,14 +4,7 @@ import Geolocation, {
 } from '@react-native-community/geolocation';
 import NetInfo from '@react-native-community/netinfo';
 import React, { useEffect, useState } from 'react';
-import {
-  Linking,
-  PermissionsAndroid,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { Linking, ScrollView, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   loadOfficeLocation,
@@ -27,6 +20,7 @@ import flashMessage from '../../../common/FlashAlert';
 import Header from '../../../common/header/Header';
 import TextInput from '../../../common/inputBoxes/TextInput';
 import RegularText from '../../../common/RegularText';
+import { requestLocationPermission } from '../../../../utility/commonFunction';
 
 const Settings = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -66,29 +60,6 @@ const Settings = () => {
     setRadius(`${geofenceRadius}`);
   }, [geofenceRadius, officeLocation]);
 
-  const requestLocationPermission = async () => {
-    if (Platform.OS === 'android') {
-      const response = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: 'Location permission',
-          message:
-            'Geo Attendance needs your current location to set the office geofence.',
-          buttonPositive: 'Allow',
-          buttonNegative: 'Deny',
-        },
-      );
-      return response === PermissionsAndroid.RESULTS.GRANTED;
-    }
-
-    return new Promise<boolean>(resolve => {
-      Geolocation.requestAuthorization(
-        () => resolve(true),
-        () => resolve(false),
-      );
-    });
-  };
-
   const getCurrentPosition = () =>
     new Promise<GeolocationResponse>((resolve, reject) => {
       Geolocation.getCurrentPosition(resolve, reject, {
@@ -103,12 +74,12 @@ const Settings = () => {
     const nextLongitude = Number(longitude);
     const nextRadius = Number(radius);
 
-    if (
-      Number.isNaN(nextLatitude) ||
-      nextLatitude < -90 ||
-      nextLatitude > 90
-    ) {
-      flashMessage('Invalid latitude', 'warning', 'Use a value from -90 to 90.');
+    if (Number.isNaN(nextLatitude) || nextLatitude < -90 || nextLatitude > 90) {
+      flashMessage(
+        'Invalid latitude',
+        'warning',
+        'Use a value from -90 to 90.',
+      );
       return null;
     }
 
@@ -142,7 +113,9 @@ const Settings = () => {
   const onPressUseCurrentGps = async () => {
     try {
       setLocationMessage('Fetching current GPS location...');
-      const isGranted = await requestLocationPermission();
+      const isGranted = await requestLocationPermission(
+        'Geo Attendance needs your current location to set the office geofence.',
+      );
 
       if (!isGranted) {
         setLocationMessage('Location permission is required.');
@@ -225,7 +198,6 @@ const Settings = () => {
             onChangeText={setLongitude}
             placeHolder="Example: 77.209"
             keyboardType="decimal-pad"
-            mainViewStyle={styles.input}
           />
           <TextInput
             label="Geofence Radius (meters)"
@@ -233,7 +205,6 @@ const Settings = () => {
             onChangeText={setRadius}
             placeHolder="Example: 100"
             keyboardType="number-pad"
-            mainViewStyle={styles.input}
           />
 
           {isOffline ? (
